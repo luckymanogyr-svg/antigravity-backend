@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Datang | AI Career Architect</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Open+Sans:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --accent-color: #f59e0b;
+            --primary-blue: #0ea5e9;
+            /* Biru yang lebih cerah untuk kesan modern */
+        }
+
+        body {
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)),
+                url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Open Sans', sans-serif;
+            color: #f8fafc;
+        }
+
+        .font-heading {
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        /* Navbar Modern */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Text */
+        .hero-title {
+            background: linear-gradient(to right, #ffffff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        /* Kartu Fitur Modern */
+        .feature-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--accent-color);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .icon-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .icon-container {
+            transform: scale(1.1);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        /* Tombol Utama */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Divider */
+        .divider-custom {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+    </style>
+
+<body class="min-h-screen flex flex-col">
+
+    <header class="glass-nav fixed w-full py-4 px-10 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h2 class="font-heading font-bold text-xl tracking-tighter text-white">
+                <i class="fas fa-robot text-amber-500 mr-2"></i>AI Career Architect
+            </h2>
+            <div class="hidden md:block text-xs uppercase tracking-widest text-slate-400">
+                Professional AI Suite v2.0
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24">
+        <section class="container mx-auto px-6 py-16 text-center max-w-5xl">
+            <h1 class="hero-title text-5xl md:text-7xl mb-8 leading-tight font-heading">
+                Revolusi Pencarian Kerja Anda dengan AI
+            </h1>
+            <p class="text-xl md:text-2xl font-light text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+                Tinggalkan cara lama. Gunakan teknologi cerdas untuk <span
+                    class="text-white font-semibold underline decoration-amber-500">verifikasi loker</span>,
+                analisis CV otomatis, dan lamaran instan.
+            </p>
+
+            <a href="/dashboard"
+                class="btn-glow btn-access bg-amber-500 text-slate-900 px-10 py-5 rounded-xl font-bold text-xl shadow-2xl inline-flex items-center gap-3">
+                MULAI AKSES DASHBOARD <i class="fas fa-arrow-right text-sm"></i>
+            </a>
+        </section>
+
+        <section class="container mx-auto px-6 py-20">
+            <div class="text-center mb-16">
+                <span class="text-amber-500 font-bold tracking-[0.3em] text-xs uppercase">Ecosystem</span>
+                <h2 class="font-heading text-3xl md:text-4xl font-bold mt-2">Cara Kerja Simpel</h2>
+                <div class="divider-custom mt-6 w-full max-w-xs mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+                <div class="feature-card p-8 rounded-3xl text-center">
+                    <div class="icon-container inline-block">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3077/3077325.png" alt="Search"
+                            class="w-24 h-24">
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-4 text-white">Smart Job Hunting</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Pencarian otomatis di berbagai platform loker
+                        dalam satu dashboard terintegrasi.</p>
+                </div>
+
+                <div class="feature-card p-8 rounded-3xl text-center">
+                    <div class="icon-container inline-block">
+                        <img src="https://images.unsplash.com/photo-1589254065878-42c9da997008?q=80&w=2070&auto=format&fit=crop"
+                            alt="AI" class="w-24 h-24 rounded-xl object-cover">
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-4 text-white">Cover Letter AI</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Generator lamaran personal yang menyesuaikan skill
+                        Anda dengan kebutuhan perusahaan.</p>
+                </div>
+
+                <div class="feature-card p-8 rounded-3xl text-center">
+                    <div class="icon-container inline-block">
+                        <img src="https://cdn-icons-png.flaticon.com/512/235/235252.png" alt="CV" class="w-24 h-24">
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-4 text-white">PDF CV Analyzer</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Bedah CV Anda secara instan untuk mengetahui skor
+                        kecocokan dengan posisi yang dilamar.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer
+        class="w-full py-10 text-center text-xs text-slate-500 bg-slate-950/50 backdrop-blur-md border-t border-white/5">
+        <p class="mb-2 uppercase tracking-[0.2em]">Crafted for the future of work</p>
+        <p>© 2025 AI Career Architect. Dibuat oleh Mas Lucky</p>
+    </footer>
+</body>
+
+</html>

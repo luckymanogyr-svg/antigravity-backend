@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZ47YS9PDM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-LZ47YS9PDM', { 'cookie_flags': 'SameSite=None;Secure' });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Architect | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .console-bg {
+            background-color: #000;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .scroller::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroller::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+
+        /* --- CSS CHAT MODERN --- */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-bottom: 20px;
+        }
+
+        .msg-wrapper {
+            display: flex;
+            width: 100%;
+        }
+
+        .msg-user {
+            justify-content: flex-end;
+        }
+
+        .msg-ai {
+            justify-content: flex-start;
+        }
+
+        .chat-bubble {
+            max-width: 85%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .bubble-user {
+            background-color: #005c4b;
+            color: #e9edef;
+            border-radius: 12px 0px 12px 12px;
+        }
+
+        .bubble-ai {
+            background-color: #202c33;
+            color: #e9edef;
+            border-radius: 0px 12px 12px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-content strong {
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .chat-content h3 {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .chat-content ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .chat-content li {
+            margin-bottom: 4px;
+        }
+
+        .animate-pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-bounce-in {
+            animation: slideUpFade 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8 max-w-7xl mx-auto">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="md:col-span-2 flex flex-col justify-center">
+            <h1 class="text-2xl font-bold text-blue-400"><i class="fas fa-robot"></i> AI CAREER ARCHITECT</h1>
+            <p class="text-gray-400 text-xs">Command Center & Monitoring Terminal</p>
+        </div>
+        <div class="glass p-3 rounded-xl text-center flex flex-col justify-center">
+            <span class="block text-gray-400 text-[10px] uppercase tracking-widest">Status Sistem</span>
+            <span id="statusBadge" class="text-lg font-bold text-yellow-500 uppercase">Checking...</span>
+        </div>
+        <div class="flex flex-wrap gap-2 items-center justify-center">
+            <button onclick="jalankanHunting()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2"><i
+                    class="fas fa-rocket"></i> JALANKAN</button>
+            <button onclick="stopHunting()"
+                class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2"><i
+                    class="fas fa-stop-circle"></i> STOP</button>
+            <button onclick="resetSystem()"
+                class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2"><i
+                    class="fas fa-undo"></i> RESET</button>
+        </div>
+    </div>
+
+    <div class="glass rounded-xl overflow-hidden mb-6">
+        <div class="bg-gray-800 px-4 py-2 flex justify-between items-center border-b border-white/10">
+            <span class="text-[10px] font-bold text-blue-300 uppercase"><i class="fas fa-terminal mr-2"></i>Live Log
+                Monitor</span>
+            <button onclick="clearLogs()"
+                class="text-[10px] text-gray-500 hover:text-white uppercase font-bold">Clear</button>
+        </div>
+        <div id="consoleLog"
+            class="console-bg p-4 h-48 overflow-y-auto scroller text-green-400 text-xs leading-relaxed">
+            > Sistem siap menerima perintah...
+        </div>
+    </div>
+
+    <div class="glass p-4 rounded-xl mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+            <div class="md:col-span-4 relative w-full">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                <input type="text" id="searchInput" placeholder="Cari posisi atau perusahaan..."
+                    class="w-full bg-black/20 border border-white/10 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:border-blue-500 transition text-sm text-white h-12">
+            </div>
+            <div class="md:col-span-3 w-full">
+                <select id="filterLokasi"
+                    class="w-full bg-gray-800 border border-white/10 rounded-lg px-4 focus:outline-none text-white text-sm h-12">
+                    <option value="">Semua Lokasi</option>
+                </select>
+            </div>
+            <button onclick="liveSearch()"
+                class="md:col-span-1 w-full bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-lg font-bold transition flex items-center justify-center h-12 shadow-lg shadow-blue-900/20 active:scale-95">
+                <i class="fas fa-search"></i>
+            </button>
+            <a href="https://docs.google.com/spreadsheets/d/1cD1BHQDgWO8QCL1AFEtTUuCehauzng4NMc778TzYDCA"
+                target="_blank"
+                class="md:col-span-2 w-full bg-green-600 hover:bg-green-700 text-white rounded-lg text-[10px] md:text-xs font-bold transition flex items-center justify-center gap-2 h-12 uppercase tracking-wide shadow-lg shadow-green-900/20 active:scale-95">
+                <i class="fas fa-database"></i> Database
+            </a>
+            <button onclick="openModalCV()"
+                class="md:col-span-2 w-full bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[10px] md:text-xs font-bold transition flex items-center justify-center gap-2 h-12 uppercase tracking-wide shadow-lg shadow-purple-900/20 active:scale-95">
+                <i class="fas fa-file-upload"></i> Upload CV (PDF)
+            </button>
+        </div>
+    </div>
+
+    <div id="jobFeed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"></div>
+
+    <div class="flex justify-between items-center glass p-3 rounded-xl mb-8" id="paginationControls">
+        <button onclick="prevPage()" id="btnPrev"
+            class="text-gray-400 hover:text-white disabled:opacity-30 text-sm font-bold flex items-center gap-2"><i
+                class="fas fa-chevron-left"></i> Prev</button>
+        <span id="pageIndicator" class="text-xs text-gray-400">Halaman 1</span>
+        <button onclick="nextPage()" id="btnNext"
+            class="text-gray-400 hover:text-white disabled:opacity-30 text-sm font-bold flex items-center gap-2">Next <i
+                class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div id="modalAudit"
+        class="fixed inset-0 bg-black/95 hidden items-center justify-center p-4 z-[70] backdrop-blur-md">
+        <div
+            class="glass w-full max-w-6xl h-[90vh] rounded-2xl overflow-hidden flex flex-col border border-indigo-500/30">
+            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-indigo-900/20">
+                <h2 class="font-bold text-indigo-400 flex items-center gap-2 text-sm uppercase tracking-widest"><i
+                        class="fas fa-user-shield"></i> Smart CV Auditor</h2>
+                <div class="flex items-center gap-3">
+                    <button onclick="minimizeAuditModal()"
+                        class="text-gray-400 hover:text-white transition transform hover:scale-110" title="Kecilkan"><i
+                            class="fas fa-minus"></i></button>
+                    <button onclick="closeAuditModal()"
+                        class="text-gray-400 hover:text-red-500 transition transform hover:scale-110" title="Tutup"><i
+                            class="fas fa-times text-xl"></i></button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-hidden flex flex-col md:flex-row">
+                <div class="w-full md:w-1/3 border-r border-white/10 p-6 overflow-y-auto scroller bg-black/20">
+                    <div class="text-center mb-6">
+                        <h3 class="text-[10px] text-gray-500 uppercase font-bold mb-4">Suitability Score</h3>
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg class="w-32 h-32">
+                                <circle class="text-gray-800" stroke-width="8" stroke="currentColor" fill="transparent"
+                                    r="58" cx="64" cy="64" />
+                                <circle id="auditScoreCircle" class="text-indigo-500 transition-all duration-1000"
+                                    stroke-width="8" stroke-dasharray="364" stroke-dashoffset="364"
+                                    stroke-linecap="round" stroke="currentColor" fill="transparent" r="58" cx="64"
+                                    cy="64" />
+                            </svg>
+                            <span id="auditScoreText" class="absolute text-3xl font-bold text-white">0%</span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="text-xs font-bold text-blue-400 uppercase mb-3 border-b border-white/10 pb-2">
+                            Analisis & Detail Audit</h4>
+                        <div id="auditDetails" class="text-sm text-gray-300 leading-relaxed space-y-3 font-light">
+                            <p class="italic text-gray-500 text-xs">Sedang memuat analisis detail...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col bg-[#0b101a] relative">
+                    <div id="chatAuditBox" class="flex-1 p-6 overflow-y-auto scroller chat-container"></div>
+                    <div class="p-4 border-t border-white/10 bg-gray-900/80 backdrop-blur-md">
+                        <div class="flex gap-2 items-center">
+                            <input type="text" id="inputChatAudit"
+                                placeholder="Tanya strategi interview, gaji, atau saran..."
+                                class="flex-1 bg-white/5 border border-white/10 rounded-full px-5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all">
+                            <button onclick="sendChatAudit()"
+                                class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"><i
+                                    class="fas fa-paper-plane text-sm"></i></button>
+                        </div>
+                    </div>
+                    <div id="auditLoading"
+                        class="hidden absolute inset-0 bg-black/80 z-20 flex flex-col items-center justify-center text-center backdrop-blur-sm">
+                        <div
+                            class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4">
+                        </div>
+                        <p class="text-indigo-400 text-xs font-bold animate-pulse">MEMBEDAH KUALIFIKASI...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="minimizedAuditBar" onclick="restoreAuditModal()"
+        class="hidden fixed bottom-6 right-6 z-[90] cursor-pointer group animate-bounce-in">
+        <div
+            class="glass border border-indigo-500/50 bg-indigo-900/80 text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-3 hover:bg-indigo-800 transition-all">
+            <div class="relative">
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-ping absolute"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full relative border border-white"></div>
+            </div>
+            <div class="flex flex-col"><span class="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">Sesi
+                    Aktif</span><span class="text-xs font-bold">Smart CV Auditor</span></div>
+            <i class="fas fa-expand-alt ml-2 text-indigo-300 group-hover:text-white"></i>
+        </div>
+    </div>
+
+    <div id="modalCV" class="fixed inset-0 bg-black/90 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
+        <div
+            class="glass w-full max-w-lg rounded-2xl overflow-hidden flex flex-col p-6 border border-white/10 max-h-[90vh] overflow-y-auto scroller">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="font-bold text-purple-400 flex items-center gap-2 text-lg"><i class="fas fa-file-pdf"></i>
+                    Upload & Edit CV</h2>
+                <button onclick="closeModalCV()" class="text-gray-400 hover:text-white"><i
+                        class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <div id="stepUpload">
+                <form onsubmit="parseCV(this); return false;" class="flex flex-col gap-4">
+                    <div
+                        class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center hover:border-purple-500 transition bg-white/5">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                        <p class="text-xs text-gray-300 mb-2">Pilih file CV (PDF)</p>
+                        <input type="file" name="file_cv" accept="application/pdf" required
+                            class="text-xs text-gray-500 file:bg-purple-600 file:text-white file:border-0 file:rounded-full file:px-4 file:py-1">
+                    </div>
+                    <button type="submit" id="btnParse"
+                        class="w-full bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-lg font-bold text-sm shadow-lg transition-all">
+                        <i class="fas fa-robot"></i> BACA CV (AI)
+                    </button>
+                </form>
+            </div>
+
+            <div id="stepReview" class="hidden flex-col gap-3">
+                <div class="bg-blue-900/30 p-3 rounded border border-blue-500/30 text-[10px] text-blue-200 mb-2">
+                    <i class="fas fa-info-circle"></i> Silakan koreksi hasil bacaan AI sebelum disimpan.
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase">Label Profil</label>
+                    <input type="text" id="editLabel"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white text-xs font-bold text-yellow-400"
+                        placeholder="Cth: CV Sales 2025">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase">Nama Lengkap</label>
+                    <input type="text" id="editNama"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white text-xs">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase">Ringkasan</label>
+                    <textarea id="editSummary" rows="3"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white text-xs"></textarea>
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase">Skills</label>
+                    <textarea id="editSkills" rows="3"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white text-xs"></textarea>
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase text-green-400">Pengalaman Kerja
+                        (Extracted)</label>
+                    <textarea id="editExperience" rows="5"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white text-xs"
+                        placeholder="AI akan mengisi riwayat kerja di sini..."></textarea>
+                </div>
+
+                <div class="flex items-center gap-2 mt-2">
+                    <input type="checkbox" id="saveLocal" checked class="accent-purple-500 h-4 w-4">
+                    <label for="saveLocal" class="text-xs text-gray-300">Simpan di browser</label>
+                </div>
+
+                <button onclick="saveCV()" id="btnSaveFinal"
+                    class="mt-2 w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-lg font-bold text-sm shadow-lg transition-all">
+                    <i class="fas fa-save"></i> SIMPAN PROFIL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalSelectProfile"
+        class="fixed inset-0 bg-black/95 hidden items-center justify-center p-4 z-[60] backdrop-blur-md">
+        <div class="glass w-full max-w-sm rounded-xl overflow-hidden flex flex-col p-5 border border-white/20">
+            <h3 class="font-bold text-white text-center mb-1">Pilih Profil CV</h3>
+            <div id="profileList" class="flex flex-col gap-2 max-h-60 overflow-y-auto scroller mb-4"></div>
+            <button onclick="openModalCV(); document.getElementById('modalSelectProfile').style.display='none'"
+                class="w-full border border-dashed border-gray-600 text-gray-400 hover:text-white hover:border-white py-2 rounded text-xs transition">
+                <i class="fas fa-plus"></i> Upload / Buat Profil Baru
+            </button>
+            <button onclick="document.getElementById('modalSelectProfile').style.display='none'"
+                class="mt-3 text-xs text-gray-500 hover:text-white">Batal</button>
+        </div>
+    </div>
+
+    <div id="modalAI" class="fixed inset-0 bg-black/90 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
+        <div class="glass w-full max-w-4xl h-[85vh] rounded-2xl overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-white/10 flex justify-between items-center bg-gray-800/50">
+                <h2 class="font-bold text-blue-400 flex items-center gap-2 text-sm uppercase"><i
+                        class="fas fa-magic"></i> AI Generator</h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i
+                        class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 id="modalPosisi" class="text-lg font-bold text-white mb-1"></h3>
+                    <p id="modalPerusahaan" class="text-blue-400 text-xs font-medium mb-4"></p>
+                    <div
+                        class="bg-white/5 p-4 rounded-lg text-xs text-gray-300 leading-relaxed mb-4 border border-white/10">
+                        <p class="mb-2 text-blue-300"><strong>🤖 AI Assistant Ready</strong></p>
+                        <p>Sistem akan membuat surat lamaran yang dipersonalisasi berdasarkan:</p>
+                        <ul class="list-disc pl-4 mt-2 space-y-1">
+                            <li>Detail Lowongan di atas</li>
+                            <li>CV/Profil Anda di Database</li>
+                            <li>Format yang dipilih (<span id="selectedFormat"
+                                    class="text-yellow-400 font-bold">EMAIL</span>)</li>
+                        </ul>
+                    </div>
+                    <button id="btnGenerate" onclick="executeAI()"
+                        class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-bold text-sm shadow-lg shadow-blue-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-bolt"></i> BUAT SURAT LAMARAN SEKARANG
+                    </button>
+                </div>
+                <div class="flex flex-col gap-3 h-full relative">
+                    <div id="loadingOverlay"
+                        class="hidden absolute inset-0 bg-black/80 z-10 flex flex-col items-center justify-center text-center rounded-xl backdrop-blur-sm">
+                        <div
+                            class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4">
+                        </div>
+                        <p class="text-blue-400 text-xs font-bold animate-pulse">AI SEDANG MERACIK KATA-KATA...</p>
+                        <p class="text-gray-500 text-[10px] mt-2">Mohon tunggu, estimasi 5-10 detik.</p>
+                    </div>
+                    <div
+                        class="w-full flex-1 bg-[#0b101a] border border-white/10 rounded-xl p-4 overflow-y-auto scroller relative">
+
+                        <div id="aiResultWrapper" class="hidden">
+                            <div class="msg-wrapper msg-ai">
+                                <div class="chat-bubble bubble-ai w-full max-w-full">
+                                    <div id="aiResult" class="chat-content text-sm leading-relaxed"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="aiPlaceholder"
+                            class="h-full flex items-center justify-center text-gray-500 text-xs italic">
+                            Hasil surat lamaran akan muncul di sini...
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="copyToClipboard()"
+                            class="flex-1 bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg text-xs font-bold uppercase transition"><i
+                                class="fas fa-copy"></i> Salin</button>
+                        <button id="btnWA"
+                            class="flex-1 bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg text-xs font-bold uppercase transition hidden"><i
+                                class="fab fa-whatsapp"></i> Buka WA</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass p-6 rounded-2xl mb-8 border border-blue-500/30 bg-gradient-to-r from-blue-900/20 to-transparent">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <h3 class="text-lg font-bold text-blue-400 mb-1"><i class="fas fa-file-excel mr-2"></i>Miliki Sistem
+                    Pelacakan Loker Pribadi</h3>
+                <p class="text-xs text-gray-400 max-w-xl">Salin Master Spreadsheet kami ke Google Drive Anda untuk
+                    mencatat riwayat lamaran, status interview, dan hasil analisis AI secara rapi dan privat.</p>
+            </div>
+            <a href="https://docs.google.com/spreadsheets/d/1_ervJfQNmgI4Pwx0NbkZDn7277D5UNkJzhJpl6ODMiM/copy"
+                target="_blank"
+                class="whitespace-nowrap bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3">
+                <i class="fas fa-copy"></i> BUAT SALINAN SPREADSHEET
+            </a>
+        </div>
+    </div>
+
+    <footer class="mt-16 mb-10 text-center px-4">
+        <div class="glass p-8 rounded-2xl inline-block max-w-3xl border border-white/10 relative overflow-hidden">
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50">
+            </div>
+            <p class="text-xs md:text-sm text-gray-400 leading-relaxed mb-8">
+                <i class="fas fa-shield-alt text-yellow-500 mr-1"></i>
+                <strong class="text-gray-200">DISCLAIMER:</strong> Sistem ini menggunakan AI untuk mengumpulkan data.
+                Kami tidak bertanggung jawab atas kesalahan informasi atau indikasi penipuan dari pihak ketiga.
+                <span class="text-white font-bold block mt-1">Harap verifikasi kembali ke sumber resmi sebelum melamar
+                    yahh.</span>
+            </p>
+            <div class="border-t border-white/10 pt-6 flex flex-col items-center">
+                <span class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4">BUTUH BANTUAN? HUBUNGI
+                    ADMIN:</span>
+                <div class="flex gap-6 justify-center mb-6">
+                    <a href="https://linkedin.com/in/lucky-manogy-rempe" target="_blank"
+                        class="group flex flex-col items-center gap-2 text-gray-400 hover:text-white transition">
+                        <div
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#0077b5] group-hover:scale-110 transition shadow-lg border border-white/5 group-hover:border-white/20">
+                            <i class="fab fa-linkedin-in text-lg"></i>
+                        </div>
+                        <span class="text-xs font-medium opacity-70 group-hover:opacity-100 transition">LinkedIn</span>
+                    </a>
+                    <a href="https://instagram.com/luckyrempe_" target="_blank"
+                        class="group flex flex-col items-center gap-2 text-gray-400 hover:text-white transition">
+                        <div
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gradient-to-tr group-hover:from-yellow-400 group-hover:via-red-500 group-hover:to-purple-500 group-hover:scale-110 transition shadow-lg border border-white/5 group-hover:border-white/20">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </div>
+                        <span class="text-xs font-medium opacity-70 group-hover:opacity-100 transition">Instagram</span>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-white/5">
+                <p class="text-xs text-gray-500 font-medium">© 2025 AI Career Architect | Built with 🔥 by Mas Lucky</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentStatus = 'IDLE';
+        let targetJobIdFromServer = "";
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let refreshInterval;
+        let currentJobId = null;
+        let currentFormat = null;
+        let auditChatHistory = [];
+
+        window.onload = function () {
+            loadDashboard();
+            startAutoRefresh();
+        };
+
+        function startAutoRefresh() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(loadDashboard, 15000);
+        }
+
+        async function loadDashboard() {
+            try {
+                const response = await fetch('/api/dashboard');
+                const res = await response.json();
+                updateUI(res);
+            } catch (error) {
+                console.error("Failed to load dashboard:", error);
+            }
+        }
+
+        function updateUI(res) {
+            currentStatus = res.status;
+            const statusBadge = document.getElementById('statusBadge');
+            statusBadge.innerText = res.status;
+            statusBadge.className = (res.status === 'RUNNING' || res.status === 'BUSY') ?
+                'text-lg font-bold text-green-500 animate-pulse uppercase' :
+                'text-lg font-bold text-blue-400 uppercase';
+
+            const logBox = document.getElementById('consoleLog');
+            if (res.logs && res.logs.length > 0) {
+                logBox.innerHTML = res.logs.map(log => `<div>> ${log}</div>`).join('');
+                logBox.scrollTop = logBox.scrollHeight;
+            }
+
+            // PERBAIKAN: Jangan pakai if (allJobs.length !== res.jobs.length)
+            // Selalu update allJobs agar data terbaru (termasuk halaman selanjutnya) masuk
+            allJobs = res.jobs;
+            updateLocationDropdown();
+
+            // Pastikan liveSearch dipanggil untuk memproses pagination
+            liveSearch();
+        }
+
+        function liveSearch() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const lokasi = document.getElementById('filterLokasi').value;
+            filteredJobs = allJobs.filter(job => {
+                const textData = (job.posisi + " " + job.perusahaan).toLowerCase();
+                const matchK = textData.includes(keyword);
+                const matchL = lokasi === "" || job.lokasi === lokasi;
+                return matchK && matchL;
+            });
+            currentPage = 1;
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedItems = filteredJobs.slice(start, end);
+            const feed = document.getElementById('jobFeed');
+
+            if (paginatedItems.length === 0) {
+                feed.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500 italic text-xs">Tidak ada data ditemukan.</div>';
+            } else {
+                feed.innerHTML = paginatedItems.map(job => `
+          <div class="glass rounded-xl overflow-hidden hover:border-blue-500/50 transition border border-white/5 flex flex-col h-full group relative">
+            <div class="p-4 flex-1">
+              <div class="flex justify-between items-start mb-2">
+                <span class="bg-blue-500/10 text-blue-400 text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider">${job.tgl_post}</span>
+                <a href="${job.link}" target="_blank" class="text-gray-500 hover:text-white transition"><i class="fas fa-external-link-alt"></i></a>
+              </div>
+              <h3 class="font-bold text-sm text-white mb-1 line-clamp-2 leading-tight group-hover:text-blue-400 transition" title="${job.posisi}">${job.posisi}</h3>
+              <p class="text-blue-400 text-xs mb-3 truncate font-medium">${job.perusahaan}</p>
+              <div class="flex items-center gap-2 text-gray-500 text-[10px]">
+                 <i class="fas fa-map-marker-alt text-gray-600"></i> ${job.lokasi || '-'}
+              </div>
+            </div>
+            <div class="p-3 border-t border-white/5 flex gap-2 bg-black/20">
+              <button onclick="shareJob('${job.posisi}', '${job.perusahaan}', '${job.link}')" class="w-8 h-8 flex items-center justify-center bg-gray-700 hover:bg-blue-600 rounded-lg text-white transition shadow-lg" title="Bagikan ke Teman">
+                 <i class="fas fa-share-alt text-xs"></i>
+              </button>
+              <button onclick="openAI('${job.id}', 'WA')" class="flex-1 bg-green-900/40 hover:bg-green-600 text-green-400 hover:text-white py-1.5 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 border border-green-500/20 hover:border-green-500">
+                <i class="fab fa-whatsapp"></i> WA
+              </button>
+              <button onclick="openAI('${job.id}', 'EMAIL')" class="flex-1 bg-blue-900/40 hover:bg-blue-600 text-blue-400 hover:text-white py-1.5 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 border border-blue-500/20 hover:border-blue-500">
+                <i class="fas fa-envelope"></i> EMAIL
+              </button>
+              <button onclick="openSmartAudit('${job.id}')" class="flex-1 bg-indigo-900/40 hover:bg-indigo-600 text-indigo-400 hover:text-white py-1.5 rounded-lg text-[10px] font-bold transition flex items-center justify-center gap-1 border border-indigo-500/20 hover:border-indigo-500">
+                <i class="fas fa-chart-line"></i> AUDIT
+              </button>
+            </div>
+          </div>
+        `).join('');
+            }
+            const totalPages = Math.ceil(filteredJobs.length / itemsPerPage) || 1;
+            document.getElementById('pageIndicator').innerText = `Hal ${currentPage} / ${totalPages}`;
+            document.getElementById('btnPrev').disabled = currentPage === 1;
+            document.getElementById('btnNext').disabled = currentPage === totalPages;
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
+            if (currentPage < totalPages) { currentPage++; renderPagination(); }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) { currentPage--; renderPagination(); }
+        }
+
+        function updateLocationDropdown() {
+            const select = document.getElementById('filterLokasi');
+            const currentVal = select.value;
+            const locations = [...new Set(allJobs.map(j => j.lokasi))].filter(l => l && l !== '-').sort();
+            let html = '<option value="">Semua Lokasi</option>';
+            locations.forEach(loc => {
+                html += `<option value="${loc}" ${loc === currentVal ? 'selected' : ''}>${loc}</option>`;
+            });
+            select.innerHTML = html;
+        }
+
+        async function jalankanHunting() {
+            var pin = prompt("🔒 FITUR ADMIN: Masukkan PIN untuk menjalankan sistem:");
+            if (pin) {
+                appendLog("📡 Mengirim otorisasi...");
+                try {
+                    const response = await fetch('/api/start', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ pin })
+                    });
+                    const res = await response.text();
+                    if (res.includes("DITOLAK")) { alert(res); appendLog("❌ " + res); }
+                    else { appendLog("✅ Akses Diterima. Mesin dinyalakan."); }
+                } catch (e) {
+                    alert("Error: " + e.message);
+                }
+            }
+        }
+
+        async function stopHunting() {
+            var pin = prompt("🔒 FITUR ADMIN: Masukkan PIN untuk STOP sistem:");
+            if (pin) {
+                const btn = document.querySelector('button[onclick="jalankanHunting()"]');
+                btn.disabled = true;
+                clearInterval(refreshInterval);
+                appendLog("🛑 Mengirim sinyal STOP...");
+                try {
+                    const response = await fetch('/api/stop', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ pin })
+                    });
+                    const res = await response.text();
+                    if (res.includes("DITOLAK")) { alert(res); appendLog("❌ " + res); }
+                    else { appendLog("✅ " + res); }
+                    startAutoRefresh();
+                    setTimeout(() => btn.disabled = false, 3000);
+                } catch (e) {
+                    alert("Error: " + e.message);
+                    startAutoRefresh();
+                    setTimeout(() => btn.disabled = false, 3000);
+                }
+            }
+        }
+
+        async function resetSystem() {
+            var pin = prompt("🔒 FITUR ADMIN: Masukkan PIN untuk RESET sistem (Bahaya!):");
+            if (pin) {
+                clearInterval(refreshInterval);
+                appendLog("🔄 Mengirim sinyal RESET...");
+                try {
+                    const response = await fetch('/api/reset', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ pin })
+                    });
+                    const res = await response.text();
+                    if (res.includes("DITOLAK")) { alert(res); appendLog("❌ " + res); }
+                    else { appendLog("✅ " + res); }
+                    startAutoRefresh();
+                } catch (e) {
+                    alert("Error: " + e.message);
+                    startAutoRefresh();
+                }
+            }
+        }
+
+        async function clearLogs() {
+            if (currentStatus !== 'IDLE') { alert("⚠️ Log hanya bisa dihapus saat sistem IDLE."); return; }
+            try {
+                await fetch('/api/logs/clear', { method: 'POST' });
+                document.getElementById('consoleLog').innerHTML = "> Log dibersihkan...";
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function appendLog(msg) {
+            const logBox = document.getElementById('consoleLog');
+            logBox.innerHTML += `<div>> [Local] ${msg}</div>`;
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function shareJob(posisi, perusahaan, linkAsli) {
+            const myWebURL = "https://bit.ly/AICareerSeeker";
+            const textToShare = `🔥 *LOKER BARU!*\n\n💼 Posisi: ${posisi}\n🏢 PT: ${perusahaan}\n\nCek detail & buat lamaran otomatis di sini:\n👉 ${myWebURL}`;
+            navigator.clipboard.writeText(textToShare).then(() => { alert("✅ Link Website berhasil disalin!"); }).catch(err => { prompt("Copy link ini manual:", textToShare); });
+        }
+
+        document.getElementById("searchInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") { event.preventDefault(); liveSearch(); }
+        });
+
+        // --- MODAL FUNCTIONS (FIXED) ---
+        function openModalCV() {
+            document.getElementById('modalCV').style.display = 'flex';
+            document.getElementById('stepUpload').classList.remove('hidden');
+            document.getElementById('stepReview').classList.add('hidden');
+            document.getElementById('stepReview').classList.remove('flex');
+        }
+
+        function closeModalCV() {
+            document.getElementById('modalCV').style.display = 'none';
+        }
+
+        // FUNGSI PARSE CV
+        async function parseCV(formEl) {
+            const btn = document.getElementById('btnParse');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> MEMBEDAH CV...';
+
+            const formData = new FormData(formEl);
+
+            try {
+                const response = await fetch('/api/cv/parse', {
+                    method: 'POST',
+                    body: formData
+                });
+                const res = await response.json();
+
+                btn.disabled = false; btn.innerHTML = originalText;
+                if (res.success) {
+                    document.getElementById('stepUpload').classList.add('hidden');
+                    document.getElementById('stepReview').classList.remove('hidden');
+                    document.getElementById('stepReview').classList.add('flex');
+                    document.getElementById('editNama').value = res.data.nama;
+                    document.getElementById('editSummary').value = res.data.summary;
+                    document.getElementById('editSkills').value = res.data.skills;
+                    document.getElementById('editExperience').value = res.data.experience;
+                    let firstName = res.data.nama.split(" ")[0] || "User";
+                    document.getElementById('editLabel').value = "CV " + firstName.toUpperCase();
+                } else {
+                    alert(res.msg);
+                }
+            } catch (e) {
+                alert("Gagal: " + e.message);
+                btn.disabled = false; btn.innerHTML = originalText;
+            }
+        }
+
+        // FUNGSI SAVE CV
+        async function saveCV() {
+            const data = {
+                nama: document.getElementById('editNama').value,
+                label: document.getElementById('editLabel').value,
+                summary: document.getElementById('editSummary').value,
+                skills: document.getElementById('editSkills').value,
+                experience: document.getElementById('editExperience').value
+            };
+            const btn = document.getElementById('btnSaveFinal');
+            btn.disabled = true; btn.innerHTML = "MENYIMPAN...";
+
+            try {
+                const response = await fetch('/api/cv/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const res = await response.json();
+
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> SIMPAN PROFIL';
+                if (res.success) {
+                    localStorage.setItem("ACTIVE_USER_ID", res.userID);
+                    if (document.getElementById('saveLocal').checked) {
+                        let profiles = JSON.parse(localStorage.getItem("MY_PROFILES") || "[]");
+                        profiles.push({ id: res.userID, label: res.label, nama: res.nama });
+                        localStorage.setItem("MY_PROFILES", JSON.stringify(profiles));
+                    }
+                    alert("✅ Profil Tersimpan & Siap Digunakan!");
+                    closeModalCV();
+                } else { alert(res.msg); }
+            } catch (e) {
+                alert("Error: " + e.message);
+                btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> SIMPAN PROFIL';
+            }
+        }
+
+        // --- GENERATOR LOGIC ---
+        // --- UBAH FUNGSI openAI ---
+        function openAI(id, format) {
+            currentJobId = id;
+            currentFormat = format;
+            const modal = document.getElementById('modalAI');
+
+            // RESET TAMPILAN KE PLACEHOLDER
+            document.getElementById('aiResultWrapper').classList.add('hidden');
+            document.getElementById('aiPlaceholder').classList.remove('hidden');
+            document.getElementById('aiResult').innerHTML = ""; // Bersihkan isi lama
+
+            modal.style.display = 'flex';
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            document.getElementById('btnWA').classList.add('hidden');
+            document.getElementById('selectedFormat').innerText = format;
+            const job = allJobs.find(j => j.id === id);
+            if (job) {
+                document.getElementById('modalPosisi').innerText = job.posisi;
+                document.getElementById('modalPerusahaan').innerText = job.perusahaan;
+            }
+        }
+
+        function executeAI() {
+            if (!currentJobId) { alert("Error ID"); return; }
+            let profiles = JSON.parse(localStorage.getItem("MY_PROFILES") || "[]");
+            if (profiles.length === 0) {
+                if (confirm("⚠️ Belum ada Profil CV tersimpan.\nMau upload CV sekarang?")) {
+                    closeModal();
+                    openModalCV();
+                }
+                return;
+            }
+            showProfileSelector(profiles);
+        }
+
+        function showProfileSelector(profiles) {
+            const listEl = document.getElementById('profileList');
+            listEl.innerHTML = "";
+            profiles.forEach((p, index) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5 hover:border-blue-500 transition group";
+                div.innerHTML = `
+           <div class="flex-1 cursor-pointer" onclick="runGeneration('${p.id}')">
+             <div class="font-bold text-sm text-white group-hover:text-blue-400">📂 ${p.label}</div>
+             <div class="text-[10px] text-gray-500">${p.nama}</div>
+           </div>
+           <button onclick="deleteProfile('${p.id}', ${index})" class="text-gray-600 hover:text-red-500 p-2 transition" title="Hapus Permanen">
+             <i class="fas fa-trash"></i>
+           </button>
+         `;
+                listEl.appendChild(div);
+            });
+            document.getElementById('modalSelectProfile').style.display = 'flex';
+        }
+
+        async function runGeneration(userID) {
+            document.getElementById('modalSelectProfile').style.display = 'none';
+            const loading = document.getElementById('loadingOverlay');
+            const btnGen = document.getElementById('btnGenerate');
+            const txtArea = document.getElementById('aiResult');
+            const btnWA = document.getElementById('btnWA');
+
+            loading.classList.remove('hidden');
+            btnGen.disabled = true;
+            btnGen.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> MEMPROSES...';
+
+            try {
+                const response = await fetch('/api/generate-lamaran', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jobId: currentJobId, format: currentFormat, userId: userID })
+                });
+                const res = await response.json();
+
+                loading.classList.add('hidden');
+                btnGen.disabled = false; btnGen.innerHTML = '<i class="fas fa-bolt"></i> BUAT ULANG';
+
+                if (res && res.teks) {
+                    document.getElementById('aiPlaceholder').classList.add('hidden');
+                    document.getElementById('aiResultWrapper').classList.remove('hidden');
+                    document.getElementById('aiResult').innerHTML = formatMessage(res.teks);
+
+                    if (res.teks.includes("❌") || res.teks.includes("Error")) {
+                        alert("Terjadi Kesalahan: " + res.teks);
+                    } else {
+                        if (currentFormat === 'WA') {
+                            btnWA.classList.remove('hidden');
+                            btnWA.onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent(res.teks)}`, '_blank');
+                        }
+                    }
+                }
+            } catch (err) {
+                loading.classList.add('hidden'); btnGen.disabled = false;
+                alert("KONEKSI GAGAL: " + err.message);
+            }
+        }
+
+        async function deleteProfile(userID, index) {
+            if (!confirm("⚠️ Hapus profil ini secara PERMANEN?")) return;
+            document.getElementById('profileList').children[index].style.opacity = "0.5";
+
+            try {
+                const response = await fetch('/api/cv/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: userID })
+                });
+                const res = await response.text();
+                alert(res);
+                let profiles = JSON.parse(localStorage.getItem("MY_PROFILES") || "[]");
+                profiles.splice(index, 1);
+                localStorage.setItem("MY_PROFILES", JSON.stringify(profiles));
+                if (profiles.length === 0) {
+                    document.getElementById('modalSelectProfile').style.display = 'none';
+                } else {
+                    showProfileSelector(profiles);
+                }
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
+        }
+
+        function closeModal() { document.getElementById('modalAI').style.display = 'none'; }
+        // --- GANTI FUNGSI copyToClipboard ---
+        function copyToClipboard() {
+            // Ambil teks murni dari dalam Div
+            const textToCopy = document.getElementById('aiResult').innerText;
+
+            if (!textToCopy) {
+                alert("Belum ada teks untuk disalin!");
+                return;
+            }
+
+            // Gunakan API Clipboard modern
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert("✅ Teks berhasil disalin!");
+            }).catch(err => {
+                // Fallback manual jika navigator gagal
+                alert("Gagal menyalin otomatis. Silakan blok teks dan copy manual.");
+            });
+        }
+
+        // --- SMART AUDIT LOGIC ---
+        function minimizeAuditModal() {
+            document.getElementById('modalAudit').style.display = 'none';
+            document.getElementById('minimizedAuditBar').classList.remove('hidden');
+            document.getElementById('minimizedAuditBar').classList.add('flex');
+        }
+
+        function restoreAuditModal() {
+            document.getElementById('modalAudit').style.display = 'flex';
+            document.getElementById('minimizedAuditBar').classList.add('hidden');
+            document.getElementById('minimizedAuditBar').classList.remove('flex');
+        }
+
+        function closeAuditModal() {
+            document.getElementById('modalAudit').style.display = 'none';
+            document.getElementById('minimizedAuditBar').classList.add('hidden');
+            document.getElementById('minimizedAuditBar').classList.remove('flex');
+        }
+
+        async function openSmartAudit(jobId) {
+            currentJobId = jobId;
+            const activeUserID = localStorage.getItem("ACTIVE_USER_ID");
+            if (!activeUserID) { alert("⚠️ Silakan Upload CV (PDF) Anda terlebih dahulu di menu Dashboard!"); return; }
+            document.getElementById('minimizedAuditBar').classList.add('hidden');
+            document.getElementById('minimizedAuditBar').classList.remove('flex');
+            document.getElementById('modalAudit').style.display = 'flex';
+            document.getElementById('auditScoreText').innerText = '0%';
+            document.getElementById('auditScoreCircle').style.strokeDashoffset = "364";
+            document.getElementById('auditDetails').innerHTML = "<p class='animate-pulse text-xs text-gray-400'>Sedang menganalisis profil & detail pekerjaan...</p>";
+            document.getElementById('chatAuditBox').innerHTML = "";
+            auditChatHistory = [];
+            document.getElementById('auditLoading').classList.remove('hidden');
+
+            try {
+                const response = await fetch('/api/audit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jobId, history: [], userId: activeUserID })
+                });
+                const res = await response.json();
+
+                document.getElementById('auditLoading').classList.add('hidden');
+                if (res.error) { alert(res.teks); return; }
+                updateAuditScore(res.score);
+                document.getElementById('auditDetails').innerHTML = formatMessage(res.leftPanel || "Tidak ada detail.");
+                appendChatAudit("model", res.chatText || "Halo! Saya siap membantu simulasi interview.");
+                auditChatHistory.push({ role: "model", parts: [{ text: res.chatText }] });
+            } catch (e) {
+                document.getElementById('auditLoading').classList.add('hidden');
+                alert("Error: " + e.message);
+            }
+        }
+
+        async function sendChatAudit() {
+            const input = document.getElementById('inputChatAudit');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            appendChatAudit("user", msg);
+            input.value = "";
+            appendLoadingBubble();
+
+            // Simpan pesan user ke history lokal
+            auditChatHistory.push({ role: "user", parts: [{ text: msg }] });
+
+            try {
+                const response = await fetch('/api/audit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    // PERBAIKAN: Ganti 'history' menjadi 'chatHistory' agar sesuai dengan backend
+                    body: JSON.stringify({
+                        jobId: currentJobId,
+                        chatHistory: auditChatHistory, // <--- Nama key harus chatHistory
+                        userId: localStorage.getItem("ACTIVE_USER_ID")
+                    })
+                });
+                const res = await response.json();
+
+                removeLoadingBubble();
+
+                // Menampilkan pesan AI (menggunakan res.teks sesuai backend)
+                if (res.teks) {
+                    appendChatAudit("model", res.teks);
+                    // Simpan respon AI ke history agar percakapan berlanjut
+                    auditChatHistory.push({ role: "model", parts: [{ text: res.teks }] });
+                } else if (res.error) {
+                    appendChatAudit("model", "❌ Error: " + res.teks);
+                }
+
+            } catch (e) {
+                removeLoadingBubble();
+                console.error("Fetch Error:", e);
+                alert("Error: " + e.message);
+            }
+        }
+
+        function appendChatAudit(role, text) {
+            const box = document.getElementById('chatAuditBox');
+            const div = document.createElement('div');
+            div.className = `msg-wrapper ${role === "user" ? "msg-user" : "msg-ai"}`;
+            const contentHTML = formatMessage(text);
+            div.innerHTML = `<div class="chat-bubble ${role === "user" ? "bubble-user" : "bubble-ai"}"><div class="chat-content">${contentHTML}</div></div>`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function appendLoadingBubble() {
+            const box = document.getElementById('chatAuditBox');
+            const div = document.createElement('div');
+            div.id = "chat-loader";
+            div.className = "msg-wrapper msg-ai";
+            div.innerHTML = `<div class="chat-bubble bubble-ai"><i class="fas fa-circle-notch fa-spin text-gray-400"></i></div>`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function removeLoadingBubble() {
+            const loader = document.getElementById('chat-loader');
+            if (loader) loader.remove();
+        }
+
+        function updateAuditScore(score) {
+            const circle = document.getElementById('auditScoreCircle');
+            const text = document.getElementById('auditScoreText');
+            const radius = 58;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (score / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+            text.innerText = (score || 0) + "%";
+            if (score < 50) circle.className = "text-red-500 transition-all duration-1000";
+            else if (score < 80) circle.className = "text-yellow-500 transition-all duration-1000";
+            else circle.className = "text-green-500 transition-all duration-1000";
+        }
+
+        function formatMessage(text) {
+            if (!text) return "";
+            let formatted = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^### (.*$)/gm, '<h3 class="text-blue-400 font-bold mt-2">$1</h3>')
+                .replace(/^\* (.*$)/gm, '<ul><li>$1</li></ul>')
+                .replace(/\n/g, '<br>');
+            return formatted;
+        }
+    </script>
+</body>
+
+</html>
